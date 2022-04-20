@@ -11,7 +11,15 @@ class Company{
         return this.listEmp[number];
     }
     getMemberCount(){
-        return this.listEmp.length;
+        return Employee.count;
+    }
+    getSumarySalary(){
+        let sum =0;
+        for(let i=0 ;i < this.listEmp.length;i++){
+            let emp = this.listEmp[i];
+            sum += emp.salary;
+        }
+        return sum;
     }
 }
 class Employee {
@@ -19,6 +27,8 @@ class Employee {
     static count: number = 0;
     name = 'Unknown';
     role:String ='staff';
+    salary:number = 0;
+
     // methods
     constructor(){
         Employee.count++;
@@ -30,12 +40,36 @@ class Employee {
       console.log("Walking...");
     }
 }
+class Manager extends Employee{
+    private underling = new Array();
+
+    add(person:Employee){
+        this.underling.push(person);
+    }
+    show(){
+        for(let i=0;i<this.underling.length ;i++){
+            let person = this.underling[i];
+            console.log(person.name);
+        }
+    }
+}
+
 var obj1 = new Employee();
 obj1.setRole('Programmer');
-var obj2 = new Employee();
-obj1.setRole('Manager');
+obj1.name="Man"
+obj1.salary = 1000;
+var obj2 = new Manager();
+obj2.setRole('Manager');
+obj2.name = 'Xan';
+obj2.salary = 2000;
 var obj3 = new Employee();
+obj3.setRole('Programmer');
+obj3.name = 'New';
+obj3.salary = 1000;
 var obj4 = new Employee();
+obj4.setRole('Programmer');
+obj4.name = 'Nook';
+obj4.salary = 1000;
 
 console.log(obj1.role);
 console.log(obj2.role);
@@ -46,8 +80,13 @@ var pkl = new Company();
 pkl.setPerson(obj1);
 pkl.setPerson(obj2);
 pkl.setPerson(obj3);
+pkl.setPerson(obj4);
 
 console.log("Company have count member is "+ pkl.getMemberCount()+" persons");
+console.log(pkl.getSumarySalary());
+
+obj2.add(obj1);
+obj2.show();
 
 
   /*

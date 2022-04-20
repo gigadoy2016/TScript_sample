@@ -1,3 +1,18 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var Company = /** @class */ (function () {
     function Company() {
         // properties      
@@ -13,7 +28,15 @@ var Company = /** @class */ (function () {
         return this.listEmp[number];
     };
     Company.prototype.getMemberCount = function () {
-        return this.listEmp.length;
+        return Employee.count;
+    };
+    Company.prototype.getSumarySalary = function () {
+        var sum = 0;
+        for (var i = 0; i < this.listEmp.length; i++) {
+            var emp = this.listEmp[i];
+            sum += emp.salary;
+        }
+        return sum;
     };
     return Company;
 }());
@@ -22,6 +45,7 @@ var Employee = /** @class */ (function () {
     function Employee() {
         this.name = 'Unknown';
         this.role = 'staff';
+        this.salary = 0;
         Employee.count++;
     }
     Employee.prototype.setRole = function (r) {
@@ -34,12 +58,40 @@ var Employee = /** @class */ (function () {
     Employee.count = 0;
     return Employee;
 }());
+var Manager = /** @class */ (function (_super) {
+    __extends(Manager, _super);
+    function Manager() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.underling = new Array();
+        return _this;
+    }
+    Manager.prototype.add = function (person) {
+        this.underling.push(person);
+    };
+    Manager.prototype.show = function () {
+        for (var i = 0; i < this.underling.length; i++) {
+            var person = this.underling[i];
+            console.log(person.name);
+        }
+    };
+    return Manager;
+}(Employee));
 var obj1 = new Employee();
 obj1.setRole('Programmer');
-var obj2 = new Employee();
-obj1.setRole('Manager');
+obj1.name = "Man";
+obj1.salary = 1000;
+var obj2 = new Manager();
+obj2.setRole('Manager');
+obj2.name = 'Xan';
+obj2.salary = 2000;
 var obj3 = new Employee();
+obj3.setRole('Programmer');
+obj3.name = 'New';
+obj3.salary = 1000;
 var obj4 = new Employee();
+obj4.setRole('Programmer');
+obj4.name = 'Nook';
+obj4.salary = 1000;
 console.log(obj1.role);
 console.log(obj2.role);
 console.log(obj3.role);
@@ -48,7 +100,11 @@ var pkl = new Company();
 pkl.setPerson(obj1);
 pkl.setPerson(obj2);
 pkl.setPerson(obj3);
+pkl.setPerson(obj4);
 console.log("Company have count member is " + pkl.getMemberCount() + " persons");
+console.log(pkl.getSumarySalary());
+obj2.add(obj1);
+obj2.show();
 /*
 
 */
